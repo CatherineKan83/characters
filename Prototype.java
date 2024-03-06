@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -105,7 +106,7 @@ public abstract class Prototype{
     public void shoot(Prototype target){
         if(target.status==Statuses.ALIVE){
             int dis = (int)Coordinates.getDistance(this.coordinates,target.coordinates);
-            if(this.inventory.items.containsKey("arrow")){
+            if(this.inventory.items.containsKey("arrow") && this.inventory.items.get("arrow")>0){
                 if(this.coordinates.getY()>target.coordinates.getY()){
                     int damage = Prototype.n.nextInt(10,30)+dis;
                     System.out.println(String.format("\n%s attacks %s",this.name, target.name));
@@ -216,6 +217,35 @@ public abstract class Prototype{
             break;
         }
     }
+    public void giveArrow(List<Prototype>a){
+        HashMap <Integer, Prototype>l =new HashMap<>(); 
+        int i =1;
+        boolean check = false;
+        for(Prototype prototype: a){
+            if(prototype instanceof Ranger){
+                l.put(i,prototype);
+                i++;
+            }
+        }
+        if(l.isEmpty()){
+            System.out.println("No one to give it to");
+        } else{
+            for (Integer key : l.keySet()) {
+                Prototype value = l.get(key);
+                System.out.println(key + "->" + value);
+            }
+            System.out.print("Your choice:");
+            while(check==false){
+                int c = input.nextInt();
+                if(l.containsKey(c)){
+                    l.get(c).inventory.items.replace("arrow", l.get(c).inventory.items.get("arrow"),l.get(c).inventory.items.get("arrow")+1);
+                    check=true;
+                } else{
+                    System.out.println("Input error");
+                }
+            }
+        }
+    }
     public void rest() {
         r=Prototype.n.nextInt(10,35);
     }
@@ -253,23 +283,24 @@ public abstract class Prototype{
             }else if (this instanceof Martial) {
                 System.out.println(String.format("\n%s's move. Choose action:\n1->use skill attack on closest enemy\n2->rest\n3->check inventory\n4->move",this.name));                
             }else if (this instanceof Wanderer) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->move closer to enemy\n3->rest\n4->check inventory\n5->move",this.name));
+                System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->move closer to enemy\n3->rest\n4->check inventory\n5->move\n6->give arrow to ally",this.name));
             }  
         }
     }
 
 
     public static void round(List<Prototype>a,List<Prototype>b){
+        count=1;
         int dead=0;
         boolean win= false;
         Prototype.queue(a);
         Prototype.queue(b);
-        View.view();
         while(win!=true){
+            System.out.println(String.format("\nROUND %d", count));
             for (Prototype prototype : a) {
                 if(prototype.status==Statuses.ALIVE){
-                    prototype.step(a,b);
                     View.view();
+                    prototype.step(a,b);
                     for (Prototype enemy : b) {
                         if(enemy.status==Statuses.DEAD){
                             dead+=1;
@@ -284,8 +315,8 @@ public abstract class Prototype{
             }
             for (Prototype prototype : b) {
                 if(prototype.status==Statuses.ALIVE){
-                    prototype.step(b,a);
                     View.view();
+                    prototype.step(b,a);
                     for (Prototype enemy : a) {
                         if(enemy.status==Statuses.DEAD){
                             dead+=1;
@@ -298,6 +329,7 @@ public abstract class Prototype{
                     dead = 0;
                 }
             }
+            count+=1;
         }
     }
 

@@ -8,7 +8,7 @@ public class Main{
     public static int teamcount;
     public static void main(String[] args) {
         Scanner input= new Scanner(System.in);
-        System.out.println("Введите количество игроков в одной команде:\n");
+        System.out.print("Input the number of players in one team:");
         teamcount= input.nextInt();
         int x1 = 1;
         int x2 = 1;
@@ -70,14 +70,14 @@ public class Main{
             System.out.println(String.format("\n|New player %s %s joined team 1|" + team1.get(i).getInfo(),team1.get(i).getClass().getSimpleName(),team1.get(i).name));
             System.out.println(String.format("\n|New player %s %s joined team 2|" + team2.get(i).getInfo(),team2.get(i).getClass().getSimpleName(),team2.get(i).name));
             if(team1.get(i) instanceof Ranger){
-                team1.get(i).inventory.addItem("arrow");
+                team1.get(i).inventory.addItem("arrow",10);
             }
             if(team2.get(i) instanceof Ranger){
-                team2.get(i).inventory.addItem("arrow");
+                team2.get(i).inventory.addItem("arrow",10);
             }
-            team1.get(i).inventory.addItem("Health potion");
+            team1.get(i).inventory.addItem("Health potion",2);
             team1.get(i).inventory.money=100;
-            team2.get(i).inventory.addItem("Health potion");
+            team2.get(i).inventory.addItem("Health potion",2);
             team2.get(i).inventory.money=100;
             
         }

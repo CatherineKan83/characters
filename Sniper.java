@@ -51,6 +51,7 @@ public class Sniper extends Prototype implements Ranger{
         super.step(a,b);
         Prototype enemy = this.findNearestEnemy(b);
         System.out.print("\n");
+        System.out.print("Your choice:");
         int p =(int)input.nextInt();
         switch(p){
         case 1:
@@ -64,6 +65,7 @@ public class Sniper extends Prototype implements Ranger{
             break;
         case 4:
             System.out.println("Choose direction:\n1->up\n2->down\n3->left\n4->right\n5->upper left\n6->upper right\n7->lower left\n8->lower right\n");
+            System.out.print("Your choice:");
             p =(int)input.nextInt();
             if(p==1){
                 this.coordinates.move("UP");
