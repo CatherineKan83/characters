@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,6 +13,41 @@ public class Druid extends Warlock implements Healer{
     @Override
     public void heal(List<Prototype>a){
         super.heal(a);
+        HashMap<Integer,Prototype>l = new HashMap<>();
+        int c =0;
+        boolean check = false;
+        for(Prototype prototype:a){
+            if(prototype.status==Statuses.ALIVE){
+                l.put(c+=1,prototype);
+            }
+        }
+        for (Integer key : l.keySet()) {
+            String value = l.get(key).name;
+            System.out.println(key + "->" + value);
+        }
+        if(this.mana>=hp){
+            while(check==false){
+                int j = input.nextInt();
+                if(l.containsKey(j)){
+                    if(l.get(j).hp<l.get(j).maxHp){
+                        l.get(j).hp = l.get(j).hp+hp;
+                        if(l.get(j).hp>l.get(j).maxHp){
+                            l.get(j).hp=l.get(j).maxHp;
+                            this.mana-=hp;
+                        }
+                        System.out.println(String.format("\n%s heals up and restores %d HP",l.get(j).name, hp));
+                    } else {
+                        System.out.println(String.format("\n%s doesn't need healing", l.get(j).name));
+                    }
+                    check=true;
+                } else{
+                    System.out.println("Input error");
+                }
+            }
+        } else{
+            System.out.print("Not enough mana");
+            this.mana+=1;
+        }
     }
     public void step(List<Prototype>a,List<Prototype>b){
         super.step(a,b);

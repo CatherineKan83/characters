@@ -186,36 +186,11 @@ public abstract class Prototype{
         } 
     }
     public void heal(List<Prototype>a){
-        int hp = Prototype.n.nextInt(10,35);
-        for(Prototype prototype:a){
-            if(prototype.status==Statuses.ALIVE){
-                if(prototype.hp<prototype.maxHp){
-                    prototype.hp = prototype.hp+hp;
-                    if(prototype.hp>prototype.maxHp){
-                        prototype.hp=prototype.maxHp;
-                    }
-                        System.out.println(String.format("\n%s heals up and restores %d HP",prototype.name, hp));
-                } else {
-                    System.out.println(String.format("\n%s doesn't need healing", prototype.name));
-                }
-            } else {System.out.println(String.format("%s is dead and cannot be healed",prototype.name));}
-        break;
-        }
+        hp = Prototype.n.nextInt(5,20);
     }   
     
     public void resurrect(List<Prototype>a){
-        for(Prototype prototype:a){
-            if(prototype.status==Statuses.DEAD){
-                System.out.println(String.format("\n%s attempts to resurrect %s",this.name,prototype.name));
-                prototype.status = Statuses.ALIVE;
-                prototype.hp = 50;
-                System.out.println(String.format("%s comes back to life and restoores %d",prototype.name,prototype.hp));
-                break;
-            } else{
-                System.out.println("No one to resurrect");
-            }
-            break;
-        }
+
     }
     public void giveArrow(List<Prototype>a){
         HashMap <Integer, Prototype>l =new HashMap<>(); 
@@ -231,7 +206,7 @@ public abstract class Prototype{
             System.out.println("No one to give it to");
         } else{
             for (Integer key : l.keySet()) {
-                Prototype value = l.get(key);
+                String value = l.get(key).name;
                 System.out.println(key + "->" + value);
             }
             System.out.print("Your choice:");
@@ -281,7 +256,7 @@ public abstract class Prototype{
             } else if (this instanceof Ranger) {
                 System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->rest\n3->check inventory\n4->move",this.name));                
             }else if (this instanceof Martial) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->use skill attack on closest enemy\n2->rest\n3->check inventory\n4->move",this.name));                
+                System.out.println(String.format("\n%s's move. Choose action:\n1->use flying kick attack on closest enemy\n2->rest\n3->check inventory\n4->move",this.name));                
             }else if (this instanceof Wanderer) {
                 System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->move closer to enemy\n3->rest\n4->check inventory\n5->move\n6->give arrow to ally",this.name));
             }  

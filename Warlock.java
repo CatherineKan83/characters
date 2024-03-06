@@ -88,6 +88,19 @@ public class Warlock extends Prototype implements Mage{
     }  
     public void resurrect(List<Prototype>a){
         super.resurrect(a);
+        for(Prototype prototype:a){
+            if(prototype.status==Statuses.DEAD){
+                System.out.println(String.format("\n%s attempts to resurrect %s",this.name,prototype.name));
+                prototype.status = Statuses.ALIVE;
+                prototype.hp = 25;
+                this.mana-=10;
+                System.out.println(String.format("%s comes back to life and restoores %d",prototype.name,prototype.hp));
+                break;
+            } else{
+                System.out.println("No one to resurrect");
+            }
+            break;
+        }
     }
     
     @Override
