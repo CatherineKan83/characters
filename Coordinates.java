@@ -1,4 +1,5 @@
 
+
 abstract public class Coordinates {
     protected int x, y;
     protected Directions direction;

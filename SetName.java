@@ -1,3 +1,4 @@
+
 import java.util.Scanner;
 public class SetName {
     Scanner input= new Scanner(System.in);

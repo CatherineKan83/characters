@@ -1,14 +1,16 @@
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+
 public abstract class Prototype{
     protected static int number;
-    protected static Random n;
+    public static Random n;
     protected static int count;
      
-    protected String name;
+    public String name;
     protected int maxHp;
     protected int hp;
     protected Statuses status;
@@ -30,10 +32,10 @@ public abstract class Prototype{
     protected enum Skills {SUMMONING,EXPLOSION,POISONING,MINDCONTROL,TANK,LEVITATION,FIREBREATH,HEADSHOT,STUN,INJURY,BLINDING}
     protected enum Weapons {DAGGER,SWORD,AXE,HAMMER,FLAIL,SPEAR,BRAID,WHIP,BOW,WAND,STAFF,CROSSBOW}
     
-    Coordinates coordinates = new Coordinates() {
+    public Coordinates coordinates = new Coordinates() {
     };
     SetName setName = new SetName();
-    Items inventory = new Items();
+    public Items inventory = new Items();
     Scanner input = new Scanner(System.in);
     static{
         Prototype.number = 0;

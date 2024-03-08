@@ -1,10 +1,11 @@
+
 import java.util.HashMap;
 
 public class Items {
     protected HashMap<String,Integer> items = new HashMap<>();
     protected String item;
     protected int quantity;
-    protected int money;
+    public int money;
     protected int capacity;
     protected int maxCapacity=10;
     public void addItem(String item,int quantity){

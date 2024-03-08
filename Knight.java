@@ -1,4 +1,5 @@
 
+
 public class Knight extends Spearman {
     public Knight(){
         super();
