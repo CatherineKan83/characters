@@ -100,24 +100,34 @@ public class Villager extends Prototype implements Wanderer{
                 System.out.println("Choose direction:\n1->up\n2->down\n3->left\n4->right\n5->upper left\n6->upper right\n7->lower left\n8->lower right\n");
                 System.out.print("Your choice:");
                 p =(int)input.nextInt();
-                if(p==1){
-                    this.coordinates.move("UP");
-                } else if(p==2){
-                    this.coordinates.move("DOWN");
-                } else if(p==3){
-                    this.coordinates.move("LEFT");
-                } else if(p==4){
-                    this.coordinates.move("RIGHT");
-                } else if(p==5){
-                    this.coordinates.move("UPPERLEFT");
-                } else if(p==6){
-                    this.coordinates.move("UPPERRIGHT");
-                } else if(p==7){
-                    this.coordinates.move("LOWERLEFT");
-                } else if(p==8){
-                    this.coordinates.move("LOWERRIGHT");
-                }
-                break;
+                switch(p){
+                    case 1:
+                        this.coordinates.move("UP");
+                        break;
+                    case 2:
+                        this.coordinates.move("DOWN");
+                        break;
+                    case 3:
+                        this.coordinates.move("LEFT");
+                        break;
+                    case 4:
+                        this.coordinates.move("RIGHT");
+                        break;
+                    case 5:
+                        this.coordinates.move("UPPERLEFT");
+                        break;
+                    case 6:
+                        this.coordinates.move("UPPERRIGHT");
+                        break;
+                    case 7:
+                        this.coordinates.move("LOWERLEFT");
+                        break;
+                    case 8:
+                        this.coordinates.move("LOWERRIGHT");
+                        break;
+                    default:
+                        System.out.println("Input error");
+                    }
             case 6:
                 super.giveArrow(a);
                 break;

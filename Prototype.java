@@ -7,10 +7,11 @@ import java.util.Scanner;
 
 public abstract class Prototype{
     protected static int number;
-    public static Random n;
+    protected static Random n;
     protected static int count;
+    protected static HashMap<String,Integer> shopitems = new HashMap<>();
      
-    public String name;
+    protected String name;
     protected int maxHp;
     protected int hp;
     protected Statuses status;
@@ -32,11 +33,12 @@ public abstract class Prototype{
     protected enum Skills {SUMMONING,EXPLOSION,POISONING,MINDCONTROL,TANK,LEVITATION,FIREBREATH,HEADSHOT,STUN,INJURY,BLINDING}
     protected enum Weapons {DAGGER,SWORD,AXE,HAMMER,FLAIL,SPEAR,BRAID,WHIP,BOW,WAND,STAFF,CROSSBOW}
     
-    public Coordinates coordinates = new Coordinates() {
+    protected Coordinates coordinates = new Coordinates() {
     };
     SetName setName = new SetName();
-    public Items inventory = new Items();
+    protected Items inventory = new Items();
     Scanner input = new Scanner(System.in);
+    
     static{
         Prototype.number = 0;
         Prototype.n = new Random();
@@ -246,21 +248,55 @@ public abstract class Prototype{
         }
         return enemy;
     }
-    
+    public static HashMap<String,Integer> setItems(){
+        shopitems.put("health potion",20);
+        shopitems.put("mana potion",20);
+        shopitems.put("energy potion",20);
+        shopitems.put("strength potion",20);
+        shopitems.put("arrow",5);
+        return shopitems;
+    }
+    public void buy(){
+        boolean check = false;
+        int count =0;
+        HashMap<Integer,String>list = new HashMap<>();
+        for (String key : shopitems.keySet()) {
+            count+=1;
+            int value = shopitems.get(key);
+            System.out.println(count + "->" + key + " cost:" + value);
+            list.put(count,key);
+        }
+        while(check==false){
+            int c = input.nextInt();
+            if(list.containsKey(c)){
+                if(this.inventory.items.containsKey(list.get(c))){
+                    this.inventory.items.replace(list.get(c), this.inventory.items.get(list.get(c)),this.inventory.items.get(list.get(c))+1);
+                    this.inventory.money-=shopitems.get(list.get(c));
+                    check=true;
+                }else{
+                    this.inventory.addItem(list.get(c), 1);;
+                    this.inventory.money-=shopitems.get(list.get(c));
+                    check=true;
+                }
+            } else{
+                System.out.println("Input error");
+            }
+        }
+    }
     public void step(List<Prototype>a,List<Prototype>b){
         if(this.status==Statuses.ALIVE){
             if (this instanceof Warrior) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->move closer to enemy\n3->rest\n4->check inventory\n5->move",this.name));
+                System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->move closer to enemy\n3->rest\n4->check inventory\n5->move\n6->buy",this.name));
             } else if (this instanceof Mage && !(this instanceof Healer)) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->use skill attack on closest enemy\n2->rest\n3->check inventory\n4->resurrect your dead ally\n5->move",this.name));                
+                System.out.println(String.format("\n%s's move. Choose action:\n1->use skill attack on closest enemy\n2->rest\n3->check inventory\n4->resurrect your dead ally\n5->move\n6->buy",this.name));                
             } else if (this instanceof Healer) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->use skill attack on closest enemy\n2->rest\n3->check inventory\n4->heal your ally\n5->move",this.name));                
+                System.out.println(String.format("\n%s's move. Choose action:\n1->use skill attack on closest enemy\n2->rest\n3->check inventory\n4->heal your ally\n5->move\n6->buy",this.name));                
             } else if (this instanceof Ranger) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->rest\n3->check inventory\n4->move",this.name));                
+                System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->rest\n3->check inventory\n4->move\n5->buy",this.name));                
             }else if (this instanceof Martial) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->use flying kick attack on closest enemy\n2->rest\n3->check inventory\n4->move",this.name));                
+                System.out.println(String.format("\n%s's move. Choose action:\n1->use flying kick attack on closest enemy\n2->rest\n3->check inventory\n4->move\n5->buy",this.name));                
             }else if (this instanceof Wanderer) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->move closer to enemy\n3->rest\n4->check inventory\n5->move\n6->give arrow to ally",this.name));
+                System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->move closer to enemy\n3->rest\n4->check inventory\n5->move\n6->give arrow to ally\n7->buy",this.name));
             }  
         }
     }

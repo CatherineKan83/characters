@@ -84,6 +84,7 @@ public class Main{
         all.addAll(team1);
         all.addAll(team2);
         Prototype.queue(all);
+        Prototype.setItems();
         Prototype.round(team1,team2);        
     }
     
