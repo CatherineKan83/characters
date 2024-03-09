@@ -25,6 +25,7 @@ public abstract class Prototype{
     protected int x;
     protected int y;
     protected int initiative;
+    protected boolean check;
     
     protected enum Statuses{ALIVE,DEAD}
     protected enum Races {HUMAN,ELF,DWARF,LIZARD,UNDEAD,DEMON,BEAST}
@@ -199,7 +200,7 @@ public abstract class Prototype{
     public void giveArrow(List<Prototype>a){
         HashMap <Integer, Prototype>l =new HashMap<>(); 
         int i =1;
-        boolean check = false;
+        check = false;
         for(Prototype prototype: a){
             if(prototype instanceof Ranger){
                 l.put(i,prototype);
@@ -253,11 +254,12 @@ public abstract class Prototype{
         shopitems.put("mana potion",20);
         shopitems.put("energy potion",20);
         shopitems.put("strength potion",20);
+        shopitems.put("magic potion",20);
         shopitems.put("arrow",5);
         return shopitems;
     }
     public void buy(){
-        boolean check = false;
+        check = false;
         int count =0;
         HashMap<Integer,String>list = new HashMap<>();
         for (String key : shopitems.keySet()) {
@@ -283,20 +285,76 @@ public abstract class Prototype{
             }
         }
     }
+    public String useItem(){
+        count=0;
+        HashMap<Integer, String> list = new HashMap<>();
+        for (String key : this.inventory.items.keySet()) {
+            count+=1;
+            int quantity = this.inventory.items.get(key);
+            System.out.println(count + "->" + key + " --- " + quantity + " left");
+            list.put(count,key);
+        }
+        int c = input.nextInt();
+        System.out.print(list.get(c));
+        return list.get(c);
+    }
+    public void giveItem(List<Prototype>a){
+        HashMap <Integer, Prototype>l =new HashMap<>(); 
+        int i =1;
+        check = false;
+        count=0;
+        HashMap<Integer, String> list = new HashMap<>();
+        for (String key : this.inventory.items.keySet()) {
+            count+=1;
+            int quantity = this.inventory.items.get(key);
+            System.out.println(count + "->" + key + " --- " + quantity + " left");
+            list.put(count,key);
+        }
+        int c = input.nextInt();
+        for(Prototype prototype: a){
+            if(prototype!=this){
+                l.put(i,prototype);
+                i++;
+            }
+        }
+        if(l.isEmpty()){
+            System.out.println("No one to give item to");
+        } else{
+            for (Integer key : l.keySet()) {
+                String value = l.get(key).name;
+                System.out.println(key + "->" + value);
+            }
+            System.out.print("Your choice:");
+            while(check==false){
+                int t = input.nextInt();
+                if(l.containsKey(c)){
+                    if(this.inventory.items.containsKey(list.get(c)))
+                    l.get(t).inventory.items.replace(list.get(c), l.get(t).inventory.items.get(list.get(c)),l.get(t).inventory.items.get(list.get(c))+1);
+                    this.inventory.items.replace(list.get(c), this.inventory.items.get(list.get(c)),this.inventory.items.get(list.get(c))-1);
+                    if(this.inventory.items.get(list.get(c))==0){
+                        this.inventory.throwItemAway(list.get(c));
+                    }
+                    check=true;
+                } else{
+                    System.out.println("Input error");
+                }
+            }
+        }
+    }
     public void step(List<Prototype>a,List<Prototype>b){
         if(this.status==Statuses.ALIVE){
             if (this instanceof Warrior) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->move closer to enemy\n3->rest\n4->check inventory\n5->move\n6->buy",this.name));
+                System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->move closer to enemy\n3->rest\n4->check inventory\n5->move\n6->buy\n7->use item\n8->give item",this.name));
             } else if (this instanceof Mage && !(this instanceof Healer)) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->use skill attack on closest enemy\n2->rest\n3->check inventory\n4->resurrect your dead ally\n5->move\n6->buy",this.name));                
+                System.out.println(String.format("\n%s's move. Choose action:\n1->use skill attack on closest enemy\n2->rest\n3->check inventory\n4->resurrect your dead ally\n5->move\n6->buy\n7->use item\n8->give item",this.name));                
             } else if (this instanceof Healer) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->use skill attack on closest enemy\n2->rest\n3->check inventory\n4->heal your ally\n5->move\n6->buy",this.name));                
+                System.out.println(String.format("\n%s's move. Choose action:\n1->use skill attack on closest enemy\n2->rest\n3->check inventory\n4->heal your ally\n5->move\n6->buy\n7->use item\n8->give item",this.name));                
             } else if (this instanceof Ranger) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->rest\n3->check inventory\n4->move\n5->buy",this.name));                
+                System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->rest\n3->check inventory\n4->move\n5->buy\n6->use item\n7->give item",this.name));                
             }else if (this instanceof Martial) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->use flying kick attack on closest enemy\n2->rest\n3->check inventory\n4->move\n5->buy",this.name));                
+                System.out.println(String.format("\n%s's move. Choose action:\n1->use flying kick attack on closest enemy\n2->rest\n3->check inventory\n4->move\n5->buy\n6->use item\n7->give item",this.name));                
             }else if (this instanceof Wanderer) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->move closer to enemy\n3->rest\n4->check inventory\n5->move\n6->give arrow to ally\n7->buy",this.name));
+                System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->move closer to enemy\n3->rest\n4->check inventory\n5->move\n6->buy\n7->use item\n8->give item",this.name));
             }  
         }
     }

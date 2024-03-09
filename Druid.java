@@ -100,10 +100,43 @@ public class Druid extends Warlock implements Healer{
                 break;
             default:
                 System.out.println("Input error");
+                break;
             }
-        case 6:
-            super.buy();
+            break;
+    case 6:
+        super.buy();
+        break;
+    case 7:
+        String l =super.useItem(); 
+        switch (l) {
+            case "Health potion":
+                this.hp+=20;
+                this.inventory.items.replace("Health potion", this.inventory.items.get("Health potion"),this.inventory.items.get("Health potion")-1);
+                break;
+            case "Mana potion":
+                this.mana+=20;
+                this.inventory.items.replace("Mana potion", this.inventory.items.get("Mana potion"),this.inventory.items.get("Mana potion")-1);
+            case "Strength potion":
+                System.out.print("Player doesn't use attribute of this type");
+                break;
+            case "Energy potion":
+                System.out.print("Player doesn't use attribute of this type");
+                break;
+            case "Magic potion":
+                System.out.print("Player doesn't use attribute of this type");
+                break;
+            case "Arrow":
+                super.giveArrow(a);
+                break;
+            default:
+            System.out.println("Input error");
+                break;
         }
+        break;
+    case 8:
+        super.giveItem(a);
+        break;
+    }
     } 
     
 }

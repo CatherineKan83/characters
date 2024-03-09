@@ -130,9 +130,43 @@ public class Spearman extends Prototype implements Warrior{
                         break;
                     default:
                         System.out.println("Input error");
+                        break;
                     }
+                    break;
             case 6:
                 super.buy();
+                break;
+            case 7:
+                String l =super.useItem(); 
+                switch (l) {
+                    case "Health potion":
+                        this.hp+=20;
+                        this.inventory.items.replace("Health potion", this.inventory.items.get("Health potion"),this.inventory.items.get("Health potion")-1);
+                        break;
+                    case "Mana potion":
+                        System.out.print("Player doesn't use attribute of this type");
+                        break;
+                    case "Strength potion":
+                        this.strength+=20;
+                        this.inventory.items.replace("Strength potion", this.inventory.items.get("Strength potion"),this.inventory.items.get("Strength potion")-1);
+                        break;
+                    case "Energy potion":
+                        System.out.print("Player doesn't use attribute of this type");
+                        break;
+                    case "Magic potion":
+                        System.out.print("Player doesn't use attribute of this type");
+                        break;
+                    case "Arrow":
+                        super.giveArrow(a);
+                        break;
+                    default:
+                        System.out.println("Input error");
+                        break;
+                }
+                break;
+            case 8:
+                super.giveItem(a);
+                break;
             }
     }
     

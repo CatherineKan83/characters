@@ -89,9 +89,44 @@ public class Monk extends Prototype implements Martial{
                     break;
                 default:
                     System.out.println("Input error");
+                    break;
                 }
+                break;
         case 5:
             super.buy();
+            break;
+        case 6:
+            String l =super.useItem(); 
+            switch (l) {
+                case "Health potion":
+                    this.hp+=20;
+                    this.inventory.items.replace("Health potion", this.inventory.items.get("Health potion"),this.inventory.items.get("Health potion")-1);
+                    break;
+                case "Mana potion":
+                    this.mana+=20;
+                    this.inventory.items.replace("Mana potion", this.inventory.items.get("Mana potion"),this.inventory.items.get("Mana potion")-1);
+                    break;
+                case "Strength potion":
+                    System.out.print("Player doesn't use attribute of this type");
+                    break;
+                case "energy potion":
+                    System.out.print("Player doesn't use attribute of this type");
+                    break;
+                case "magic potion":
+                    System.out.print("Player doesn't use attribute of this type");
+                    break;
+                case "Arrow":
+                    super.giveArrow(a);
+                    break;
+                default:
+                    System.out.println("Input error");
+                    break;
+            }
+            break;
+
+        case 7:
+            super.giveItem(a);
+            break;
         }
     } 
     public void flyingKick(Prototype target){

@@ -53,6 +53,7 @@ public class View {
         for (int i = 1; i < 11; i++) {
             System.out.print(getChar(1, i));
         }
+        if(Main.teamcount>1){
         System.out.print("|    ");
         System.out.print(Main.team1.get(0));
         tabSetter(Main.team1.get(0).toString().length(), l[0]);
@@ -76,6 +77,15 @@ public class View {
         System.out.print(Main.team1.get(Main.teamcount-1));
         tabSetter(Main.team1.get(Main.teamcount-1).toString().length(), l[0]);
         System.out.println(Main.team2.get(Main.teamcount-1));
+
+        }
+        else if(Main.teamcount==1){
+            System.out.print("|    ");
+            System.out.print(Main.team1.get(Main.teamcount-1));
+            tabSetter(Main.team1.get(Main.teamcount-1).toString().length(), l[0]);
+            System.out.println(Main.team2.get(Main.teamcount-1));
+        }
         System.out.println(bottom10);
+
     }
 }

@@ -127,9 +127,42 @@ public class Villager extends Prototype implements Wanderer{
                         break;
                     default:
                         System.out.println("Input error");
+                        break;
                     }
+                    break;
             case 6:
-                super.giveArrow(a);
+                super.buy();
+                break;
+            case 7:
+                String l =super.useItem(); 
+                switch (l) {
+                    case "Health potion":
+                        this.hp+=20;
+                        this.inventory.items.replace("Health potion", this.inventory.items.get("Health potion"),this.inventory.items.get("Health potion")-1);
+                        break;
+                    case "Mana potion":
+                        System.out.print("Player doesn't use attribute of this type");
+                        break;
+                    case "Strength potion":
+                        System.out.print("Player doesn't use attribute of this type");
+                        break;
+                    case "Energy potion":
+                        this.energy+=20;
+                        this.inventory.items.replace("Energy potion", this.inventory.items.get("Energy potion"),this.inventory.items.get("Energy potion")-1);
+                        break;
+                    case "Magic potion":
+                        System.out.print("Player doesn't use attribute of this type");
+                        break;
+                    case "Arrow":
+                        super.giveArrow(a);
+                        break;
+                    default:
+                        System.out.println("Input error");
+                        break;
+                    }
+                    break;
+            case 8:
+                super.giveItem(a);
                 break;
             }
     }

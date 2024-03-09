@@ -100,9 +100,44 @@ public class Shooter extends Prototype implements Ranger{
                     break;
                 default:
                     System.out.println("Input error");
+                    break;
                 }
+                break;
         case 5:
             super.buy();
+            break;
+        case 6:
+            String l =super.useItem(); 
+            switch (l) {
+                case "Health potion":
+                    this.hp+=20;
+                    this.inventory.items.replace("Health potion", this.inventory.items.get("Health potion"),this.inventory.items.get("Health potion")-1);
+                    break;
+                case "Mana potion":
+                    System.out.print("Player doesn't use attribute of this type");
+                    break;
+                case "Strength potion":
+                    System.out.print("Player doesn't use attribute of this type");
+                    break;
+                case "energy potion":
+                    System.out.print("Player doesn't use attribute of this type");
+                    break;
+                case "Magic potion":
+                    this.magic+=20;
+                    this.inventory.items.replace("Magic potion", this.inventory.items.get("Magic potion"),this.inventory.items.get("Magic potion")-1);
+                    break;
+                case "Arrow":
+                    this.shoot(enemy);
+                    break;
+                default:
+                    System.out.println("Input error");
+                    break;
+            }
+            break;
+        
+        case 7:
+            super.giveItem(a);
+            break;
         }
     } 
     @Override
