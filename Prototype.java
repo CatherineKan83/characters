@@ -143,47 +143,80 @@ public abstract class Prototype{
         if(target.status==Statuses.ALIVE){
             if(this.skill==Skills.FIREBREATH){
                 damage = Prototype.n.nextInt(20,35);
-                if(this.condition==Conditions.BLINDED){damage-=10;}
+                if(this.condition==Conditions.BLINDED){
+                    damage-=10;
+                    this.condition=Conditions.NORMAL;
+                }
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.FIREBREATH,target.name));
             }else if(this.skill==Skills.EXPLOSION){
                 damage = Prototype.n.nextInt(25,37);
-                if(this.condition==Conditions.BLINDED){damage-=10;}
+                if(this.condition==Conditions.BLINDED){
+                    damage-=10;
+                    this.condition=Conditions.NORMAL;
+                }
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.EXPLOSION,target.name));
             }else if(this.skill==Skills.HEADSHOT){
                 damage = Prototype.n.nextInt(15,30);
-                if(this.condition==Conditions.BLINDED){damage-=10;}
+                if(this.condition==Conditions.BLINDED){
+                    damage-=10;
+                    this.condition=Conditions.NORMAL;
+                }
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.HEADSHOT,target.name));
             }else if(this.skill==Skills.INJURY){
                 damage = Prototype.n.nextInt(10,35);
-                if(this.condition==Conditions.BLINDED){damage-=10;}
+                if(this.condition==Conditions.BLINDED){
+                    damage-=10;
+                    this.condition=Conditions.NORMAL;
+                }
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.INJURY,target.name));
             }else if(this.skill==Skills.LEVITATION){
                 damage = Prototype.n.nextInt(15,36);
-                if(this.condition==Conditions.BLINDED){damage-=10;}
+                if(this.condition==Conditions.BLINDED){
+                    damage-=10;
+                    this.condition=Conditions.NORMAL;
+                }
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.LEVITATION,target.name));
             }else if(this.skill==Skills.MINDCONTROL){
                 damage = Prototype.n.nextInt(10,30);
-                if(this.condition==Conditions.BLINDED){damage-=10;}
+                if(this.condition==Conditions.BLINDED){
+                    damage-=10;
+                    this.condition=Conditions.NORMAL;
+                }
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.MINDCONTROL,target.name));
             }else if(this.skill==Skills.POISONING){
                 damage = Prototype.n.nextInt(5,15);
-                if(this.condition==Conditions.BLINDED){damage-=10;}
+                if(this.condition==Conditions.BLINDED){
+                    damage-=10;
+                    this.condition=Conditions.NORMAL;
+                }
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.POISONING,target.name));
             }else if(this.skill==Skills.STUN){
                 damage = Prototype.n.nextInt(20,40);
-                if(this.condition==Conditions.BLINDED){damage-=10;}
+                if(this.condition==Conditions.BLINDED){
+                    damage-=10;
+                    this.condition=Conditions.NORMAL;
+                }
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.STUN,target.name));
             }else if(this.skill==Skills.SUMMONING){
                 damage = Prototype.n.nextInt(15,30);
-                if(this.condition==Conditions.BLINDED){damage-=10;}
+                if(this.condition==Conditions.BLINDED){
+                    damage-=10;
+                    this.condition=Conditions.NORMAL;
+                }
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.SUMMONING,target.name));
             }else if(this.skill==Skills.TANK){
                 damage = Prototype.n.nextInt(30,40);
-                if(this.condition==Conditions.BLINDED){damage-=10;}
+                if(this.condition==Conditions.BLINDED){
+                    damage-=10;
+                    this.condition=Conditions.NORMAL;
+                }
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.TANK,target.name));
             }else if(this.skill==Skills.BLINDING){
                 damage = Prototype.n.nextInt(30,40);
-                if(this.condition==Conditions.BLINDED){damage-=10;}
+                if(this.condition==Conditions.BLINDED){
+                    damage-=10;
+                    this.condition=Conditions.NORMAL;
+                }
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.BLINDING,target.name));
             }
         }
@@ -356,7 +389,7 @@ public abstract class Prototype{
     }
     public void step(List<Prototype>a,List<Prototype>b){
         if(this.status==Statuses.ALIVE){
-            if(this.condition==Conditions.NORMAL){
+            if(this.condition!=Conditions.STUNNED){
                 if (this instanceof Warrior) {
                     System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->use skill attack on closest enemy\n3->move closer to enemy\n4->rest\n5->check inventory\n6->move\n7->buy\n8->use item\n9->give item",this.name));
                 } else if (this instanceof Mage && !(this instanceof Healer)) {

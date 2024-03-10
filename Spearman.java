@@ -37,11 +37,11 @@ public class Spearman extends Prototype implements Warrior{
     public void skillAttack(Prototype target){
         super.skillAttack(target);
         if(this.strength<damage){ 
-            System.out.println("Out of mana.");
+            System.out.println("Out of strength.");
         } else{
             target.getDamage(damage);
             this.strength-=damage;
-            System.out.println(String.format("%s's mana: %d / %d",this.name, this.strength, this.maxStrength));
+            System.out.println(String.format("%s's strength: %d / %d",this.name, this.strength, this.maxStrength));
         }
     }
     public void step(List<Prototype>a,List<Prototype>b){

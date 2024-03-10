@@ -40,6 +40,8 @@ public class Bandit extends Prototype implements Wanderer{
         } else{
             target.getDamage(damage);
             this.energy-=damage;
+            target.condition = Conditions.BLINDED;
+            System.out.println(String.format("%s is blinded",target.name));
             System.out.println(String.format("%s's mana: %d / %d",this.name, this.energy, this.maxEnergy));
         }
     }
