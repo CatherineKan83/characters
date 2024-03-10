@@ -15,6 +15,7 @@ public abstract class Prototype{
     protected int maxHp;
     protected int hp;
     protected Statuses status;
+    protected Conditions condition;
     protected Races race;
     protected int age;
     protected Genders gender;
@@ -28,6 +29,7 @@ public abstract class Prototype{
     protected boolean check;
     
     protected enum Statuses{ALIVE,DEAD}
+    protected enum Conditions{NORMAL,STUNNED,BLINDED}
     protected enum Races {HUMAN,ELF,DWARF,LIZARD,UNDEAD,DEMON,BEAST}
     protected enum Genders {FEMALE,MALE}
     protected enum Elements {EARTH,AIR,FIRE,WATER,DARKNESS,POISON,THUNDER,LIGHT}
@@ -38,18 +40,18 @@ public abstract class Prototype{
     };
     SetName setName = new SetName();
     protected Items inventory = new Items();
-    Scanner input = new Scanner(System.in);
-    
+    Scanner input = new Scanner(System.in);    
     static{
         Prototype.number = 0;
         Prototype.n = new Random();
     }
     
-    public Prototype(String name, int hp, Statuses status, Races race, int age, Genders gender, Skills skill, Weapons weapon,int initiative){
+    public Prototype(String name, int hp, Statuses status, Conditions condition, Races race, int age, Genders gender, Skills skill, Weapons weapon,int initiative){
         this.name = setName.setName();
         this.hp = hp;
         this.maxHp = hp;
         this.status = status;
+        this.condition = condition;
         this.race = race;
         this.age = age;
         this.gender = gender;
@@ -141,39 +143,50 @@ public abstract class Prototype{
         if(target.status==Statuses.ALIVE){
             if(this.skill==Skills.FIREBREATH){
                 damage = Prototype.n.nextInt(20,35);
+                if(this.condition==Conditions.BLINDED){damage-=10;}
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.FIREBREATH,target.name));
             }else if(this.skill==Skills.EXPLOSION){
                 damage = Prototype.n.nextInt(25,37);
+                if(this.condition==Conditions.BLINDED){damage-=10;}
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.EXPLOSION,target.name));
             }else if(this.skill==Skills.HEADSHOT){
                 damage = Prototype.n.nextInt(15,30);
+                if(this.condition==Conditions.BLINDED){damage-=10;}
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.HEADSHOT,target.name));
             }else if(this.skill==Skills.INJURY){
                 damage = Prototype.n.nextInt(10,35);
+                if(this.condition==Conditions.BLINDED){damage-=10;}
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.INJURY,target.name));
             }else if(this.skill==Skills.LEVITATION){
                 damage = Prototype.n.nextInt(15,36);
+                if(this.condition==Conditions.BLINDED){damage-=10;}
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.LEVITATION,target.name));
             }else if(this.skill==Skills.MINDCONTROL){
                 damage = Prototype.n.nextInt(10,30);
+                if(this.condition==Conditions.BLINDED){damage-=10;}
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.MINDCONTROL,target.name));
             }else if(this.skill==Skills.POISONING){
                 damage = Prototype.n.nextInt(5,15);
+                if(this.condition==Conditions.BLINDED){damage-=10;}
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.POISONING,target.name));
             }else if(this.skill==Skills.STUN){
                 damage = Prototype.n.nextInt(20,40);
+                if(this.condition==Conditions.BLINDED){damage-=10;}
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.STUN,target.name));
             }else if(this.skill==Skills.SUMMONING){
                 damage = Prototype.n.nextInt(15,30);
+                if(this.condition==Conditions.BLINDED){damage-=10;}
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.SUMMONING,target.name));
             }else if(this.skill==Skills.TANK){
                 damage = Prototype.n.nextInt(30,40);
+                if(this.condition==Conditions.BLINDED){damage-=10;}
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.TANK,target.name));
             }else if(this.skill==Skills.BLINDING){
                 damage = Prototype.n.nextInt(30,40);
+                if(this.condition==Conditions.BLINDED){damage-=10;}
                 System.out.println(String.format("\n%s uses %s on %s",this.name, Skills.BLINDING,target.name));
             }
-        } else {System.out.println(String.format("%s skips move",this.name));}
+        }
     }
     public void die() {
         this.status=Statuses.DEAD;
@@ -343,19 +356,23 @@ public abstract class Prototype{
     }
     public void step(List<Prototype>a,List<Prototype>b){
         if(this.status==Statuses.ALIVE){
-            if (this instanceof Warrior) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->move closer to enemy\n3->rest\n4->check inventory\n5->move\n6->buy\n7->use item\n8->give item",this.name));
-            } else if (this instanceof Mage && !(this instanceof Healer)) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->use skill attack on closest enemy\n2->rest\n3->check inventory\n4->resurrect your dead ally\n5->move\n6->buy\n7->use item\n8->give item",this.name));                
-            } else if (this instanceof Healer) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->use skill attack on closest enemy\n2->rest\n3->check inventory\n4->heal your ally\n5->move\n6->buy\n7->use item\n8->give item",this.name));                
-            } else if (this instanceof Ranger) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->rest\n3->check inventory\n4->move\n5->buy\n6->use item\n7->give item",this.name));                
-            }else if (this instanceof Martial) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->use flying kick attack on closest enemy\n2->rest\n3->check inventory\n4->move\n5->buy\n6->use item\n7->give item",this.name));                
-            }else if (this instanceof Wanderer) {
-                System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->move closer to enemy\n3->rest\n4->check inventory\n5->move\n6->buy\n7->use item\n8->give item",this.name));
-            }  
+            if(this.condition==Conditions.NORMAL){
+                if (this instanceof Warrior) {
+                    System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->use skill attack on closest enemy\n3->move closer to enemy\n4->rest\n5->check inventory\n6->move\n7->buy\n8->use item\n9->give item",this.name));
+                } else if (this instanceof Mage && !(this instanceof Healer)) {
+                    System.out.println(String.format("\n%s's move. Choose action:\n1->use skill attack on closest enemy\n2->rest\n3->check inventory\n4->resurrect your dead ally\n5->move\n6->buy\n7->use item\n8->give item",this.name));                
+                } else if (this instanceof Healer) {
+                    System.out.println(String.format("\n%s's move. Choose action:\n1->use skill attack on closest enemy\n2->rest\n3->check inventory\n4->heal your ally\n5->move\n6->buy\n7->use item\n8->give item",this.name));                
+                } else if (this instanceof Ranger) {
+                    System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->use skill attack on closest enemy\n3->rest\n4->check inventory\n5->move\n6->buy\n7->use item\n8->give item",this.name));                
+                }else if (this instanceof Martial) {
+                    System.out.println(String.format("\n%s's move. Choose action:\n1->use flying kick attack on closest enemy\n2->use skill attack on closest enemy\n3->rest\n4->check inventory\n5->move\n6->buy\n7->use item\n8->give item",this.name));                
+                }else if (this instanceof Wanderer) {
+                    System.out.println(String.format("\n%s's move. Choose action:\n1->attack closest enemy\n2->use skill attack on closest enemy\n3->move closer to enemy\n4->rest\n5->check inventory\n6->move\n7->buy\n8->use item\n9->give item",this.name));
+                }
+            }else{
+                System.out.println(String.format("\n%s skips the move because he is %s", this.name,this.condition));
+            }
         }
     }
 

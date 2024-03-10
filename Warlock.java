@@ -9,7 +9,7 @@ public class Warlock extends Prototype implements Mage{
     Scanner input = new Scanner(System.in);
     
     public Warlock(){    
-        super("", Warlock.n.nextInt(100,300), Statuses.ALIVE,  Races.HUMAN, Warlock.n.nextInt(1,100), Genders.MALE, Skills.EXPLOSION, Weapons.CROSSBOW,1);
+        super("", Warlock.n.nextInt(100,300), Statuses.ALIVE, Conditions.NORMAL, Races.HUMAN, Warlock.n.nextInt(1,100), Genders.MALE, Skills.EXPLOSION, Weapons.CROSSBOW,1);
         this.maxMana = Warlock.n.nextInt(100, 300);
         this.mana = maxMana;
         this.element = Elements.AIR;
@@ -44,93 +44,95 @@ public class Warlock extends Prototype implements Mage{
 
     public void step(List<Prototype>a,List<Prototype>b){
         super.step(a,b);
-        if(!(this instanceof Healer)){
-            Prototype enemy = this.findNearestEnemy(b);
-            System.out.print("\n");
-            System.out.print("Your choice:");
-            int p =(int)input.nextInt();
-            switch(p){
-            case 1:
-                ((Mage)this).skillAttack(enemy);
-                break;
-            case 2:
-                this.rest();
-                break;
-            case 3:
-                this.inventory.showInventory();
-                break;
-            case 4:
-                ((Mage)this).resurrect(a);
-                break;
-            case 5:
-                System.out.println("Choose direction:\n1->up\n2->down\n3->left\n4->right\n5->upper left\n6->upper right\n7->lower left\n8->lower right\n");
+        if(this.condition==Conditions.NORMAL){
+            if(!(this instanceof Healer)){
+                Prototype enemy = this.findNearestEnemy(b);
+                System.out.print("\n");
                 System.out.print("Your choice:");
-                p =(int)input.nextInt();
+                int p =(int)input.nextInt();
                 switch(p){
-                    case 1:
-                        this.coordinates.move("UP");
+                case 1:
+                    ((Mage)this).skillAttack(enemy);
+                    break;
+                case 2:
+                    this.rest();
+                    break;
+                case 3:
+                    this.inventory.showInventory();
+                    break;
+                case 4:
+                    ((Mage)this).resurrect(a);
+                    break;
+                case 5:
+                    System.out.println("Choose direction:\n1->up\n2->down\n3->left\n4->right\n5->upper left\n6->upper right\n7->lower left\n8->lower right\n");
+                    System.out.print("Your choice:");
+                    p =(int)input.nextInt();
+                    switch(p){
+                        case 1:
+                            this.coordinates.move("UP");
+                            break;
+                        case 2:
+                            this.coordinates.move("DOWN");
+                            break;
+                        case 3:
+                            this.coordinates.move("LEFT");
+                            break;
+                        case 4:
+                            this.coordinates.move("RIGHT");
+                            break;
+                        case 5:
+                            this.coordinates.move("UPPERLEFT");
+                            break;
+                        case 6:
+                            this.coordinates.move("UPPERRIGHT");
+                            break;
+                        case 7:
+                            this.coordinates.move("LOWERLEFT");
+                            break;
+                        case 8:
+                            this.coordinates.move("LOWERRIGHT");
+                            break;
+                        default:
+                            System.out.println("Input error");
+                            break;
+                        }
                         break;
-                    case 2:
-                        this.coordinates.move("DOWN");
-                        break;
-                    case 3:
-                        this.coordinates.move("LEFT");
-                        break;
-                    case 4:
-                        this.coordinates.move("RIGHT");
-                        break;
-                    case 5:
-                        this.coordinates.move("UPPERLEFT");
-                        break;
-                    case 6:
-                        this.coordinates.move("UPPERRIGHT");
-                        break;
-                    case 7:
-                        this.coordinates.move("LOWERLEFT");
-                        break;
-                    case 8:
-                        this.coordinates.move("LOWERRIGHT");
-                        break;
-                    default:
-                        System.out.println("Input error");
-                        break;
+                case 6:
+                    super.buy();
+                    break;
+                case 7:
+                    String l =super.useItem(); 
+                    switch (l) {
+                        case "Health potion":
+                            this.hp+=20;
+                            this.inventory.items.replace("Health potion", this.inventory.items.get("Health potion"),this.inventory.items.get("Health potion")-1);
+                            break;
+                        case "Mana potion":
+                            this.mana+=20;
+                            this.inventory.items.replace("Mana potion", this.inventory.items.get("Mana potion"),this.inventory.items.get("Mana potion")-1);
+                            break;
+                        case "Strength potion":
+                            System.out.print("Player doesn't use attribute of this type");
+                            break;
+                        case "Energy potion":
+                            System.out.print("Player doesn't use attribute of this type");
+                            break;
+                        case "Magic potion":
+                            System.out.print("Player doesn't use attribute of this type");
+                            break;
+                        case "Arrow":
+                            super.giveArrow(a);
+                        default:
+                            System.out.println("Input error");
+                            break;
                     }
                     break;
-            case 6:
-                super.buy();
-                break;
-            case 7:
-                String l =super.useItem(); 
-                switch (l) {
-                    case "Health potion":
-                        this.hp+=20;
-                        this.inventory.items.replace("Health potion", this.inventory.items.get("Health potion"),this.inventory.items.get("Health potion")-1);
-                        break;
-                    case "Mana potion":
-                        this.mana+=20;
-                        this.inventory.items.replace("Mana potion", this.inventory.items.get("Mana potion"),this.inventory.items.get("Mana potion")-1);
-                        break;
-                    case "Strength potion":
-                        System.out.print("Player doesn't use attribute of this type");
-                        break;
-                    case "Energy potion":
-                        System.out.print("Player doesn't use attribute of this type");
-                        break;
-                    case "Magic potion":
-                        System.out.print("Player doesn't use attribute of this type");
-                        break;
-                    case "Arrow":
-                        super.giveArrow(a);
-                    default:
-                        System.out.println("Input error");
-                        break;
+                case 8:
+                    super.giveItem(a);
+                    break;
                 }
-                break;
-            case 8:
-                super.giveItem(a);
-                break;
             }
-        }
+        } else {this.condition=Conditions.NORMAL;}
     }  
     public void resurrect(List<Prototype>a){
         super.resurrect(a);

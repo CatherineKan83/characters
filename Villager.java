@@ -8,7 +8,7 @@ public class Villager extends Prototype implements Wanderer{
     Scanner input = new Scanner(System.in);
 
     public Villager(){    
-        super("", Villager.n.nextInt(100,200),Statuses.ALIVE,Races.HUMAN, Villager.n.nextInt(1,100), Genders.MALE, Skills.STUN, Weapons.HAMMER,0);
+        super("", Villager.n.nextInt(100,200),Statuses.ALIVE,Conditions.NORMAL, Races.HUMAN, Villager.n.nextInt(1,100), Genders.MALE, Skills.STUN, Weapons.HAMMER,0);
         
         this.maxEnergy = Villager.n.nextInt(50, 150);
         this.energy = maxEnergy;
@@ -34,137 +34,148 @@ public class Villager extends Prototype implements Wanderer{
     public void skillAttack(Prototype target){
         super.skillAttack(target);
         if(this.energy<damage){ 
-            System.out.println("Out of mana.");
+            System.out.println("Out of energy.");
         } else{
             target.getDamage(damage);
             this.energy-=damage;
-            System.out.println(String.format("%s's mana: %d / %d",this.name, this.energy, this.maxEnergy));
+            target.condition = Conditions.STUNNED;
+            System.out.println(String.format("%s is stunned",target.name));
+            System.out.println(String.format("%s's energy: %d / %d",this.name, this.energy, this.maxEnergy));
         }
     }
     public void step(List<Prototype>a,List<Prototype>b){
         super.step(a,b);
-        Prototype enemy = this.findNearestEnemy(b);
-        int dis=(int)Coordinates.getDistance(this.coordinates, enemy.coordinates);
-        if(dis>=2){
-            System.out.print(", but out of reach");
-        }
-        System.out.print("\n");
-        System.out.print("Your choice:");
-        int p =(int)input.nextInt();
-        switch(p){
-            case 1:
-            if(dis<2){
-                this.attack(enemy);
-            } else {
-                System.out.println("Your enemy is too far away");
-            }
-            break;
-            case 2:
+        if(this.condition==Conditions.NORMAL){
+            Prototype enemy = this.findNearestEnemy(b);
+            int dis=(int)Coordinates.getDistance(this.coordinates, enemy.coordinates);
             if(dis>=2){
-                if(this.coordinates.getX()>enemy.coordinates.getX()&&this.coordinates.getY()==enemy.coordinates.getY()){
-                    this.coordinates.move("UP");
-                    System.out.print(", moving closer to enemy\n");
-                }else if(this.coordinates.getX()<enemy.coordinates.getX()&&this.coordinates.getY()==enemy.coordinates.getY()){
-                    this.coordinates.move("DOWN");
-                    System.out.print(", moving closer to enemy\n");
-                }else if(this.coordinates.getX()==enemy.coordinates.getX()&&this.coordinates.getY()>enemy.coordinates.getY()){
-                    this.coordinates.move("LEFT");
-                    System.out.print(", moving closer to enemy\n");
-                }else if(this.coordinates.getX()==enemy.coordinates.getX()&&this.coordinates.getY()<enemy.coordinates.getY()){
-                    this.coordinates.move("RIGHT");
-                    System.out.print(", moving closer to enemy\n");
-                }else if(this.coordinates.getX()>enemy.coordinates.getX()&&this.coordinates.getY()>enemy.coordinates.getY()){
-                    this.coordinates.move("UPPERLEFT");
-                    System.out.print(", moving closer to enemy\n");
-                }else if(this.coordinates.getX()<enemy.coordinates.getX()&&this.coordinates.getY()<enemy.coordinates.getY()){
-                    this.coordinates.move("LOWERRIGHT");
-                    System.out.print(", moving closer to enemy\n");
-                }else if(this.coordinates.getX()>enemy.coordinates.getX()&&this.coordinates.getY()<enemy.coordinates.getY()){
-                    this.coordinates.move("UPPERRIGHT");
-                    System.out.print(", moving closer to enemy\n");
-                }else if(this.coordinates.getX()<enemy.coordinates.getX()&&this.coordinates.getY()>enemy.coordinates.getY()){
-                    this.coordinates.move("LOWERLEFT");
-                    System.out.print(", moving closer to enemy\n");
-                }else {
-                    System.out.println("Your enemy is close enough to attack");
+                System.out.print(", but out of reach");
+            }
+            System.out.print("\n");
+            System.out.print("Your choice:");
+            int p =(int)input.nextInt();
+            switch(p){
+                case 1:
+                if(dis<2){
+                    this.attack(enemy);
+                } else {
+                    System.out.println("Your enemy is too far away");
                 }
-            }
-            break;
-            case 3:
-                this.rest();
                 break;
-            case 4:
-                this.inventory.showInventory();
+                case 2:
+                if(dis<2){
+                    this.skillAttack(enemy);
+                } else {
+                    System.out.println("Your enemy is too far away");
+                }
                 break;
-            case 5:
-                System.out.println("Choose direction:\n1->up\n2->down\n3->left\n4->right\n5->upper left\n6->upper right\n7->lower left\n8->lower right\n");
-                System.out.print("Your choice:");
-                p =(int)input.nextInt();
-                switch(p){
-                    case 1:
+                case 3:
+                if(dis>=2){
+                    if(this.coordinates.getX()>enemy.coordinates.getX()&&this.coordinates.getY()==enemy.coordinates.getY()){
                         this.coordinates.move("UP");
-                        break;
-                    case 2:
+                        System.out.print(", moving closer to enemy\n");
+                    }else if(this.coordinates.getX()<enemy.coordinates.getX()&&this.coordinates.getY()==enemy.coordinates.getY()){
                         this.coordinates.move("DOWN");
-                        break;
-                    case 3:
+                        System.out.print(", moving closer to enemy\n");
+                    }else if(this.coordinates.getX()==enemy.coordinates.getX()&&this.coordinates.getY()>enemy.coordinates.getY()){
                         this.coordinates.move("LEFT");
-                        break;
-                    case 4:
+                        System.out.print(", moving closer to enemy\n");
+                    }else if(this.coordinates.getX()==enemy.coordinates.getX()&&this.coordinates.getY()<enemy.coordinates.getY()){
                         this.coordinates.move("RIGHT");
-                        break;
-                    case 5:
+                        System.out.print(", moving closer to enemy\n");
+                    }else if(this.coordinates.getX()>enemy.coordinates.getX()&&this.coordinates.getY()>enemy.coordinates.getY()){
                         this.coordinates.move("UPPERLEFT");
-                        break;
-                    case 6:
-                        this.coordinates.move("UPPERRIGHT");
-                        break;
-                    case 7:
-                        this.coordinates.move("LOWERLEFT");
-                        break;
-                    case 8:
+                        System.out.print(", moving closer to enemy\n");
+                    }else if(this.coordinates.getX()<enemy.coordinates.getX()&&this.coordinates.getY()<enemy.coordinates.getY()){
                         this.coordinates.move("LOWERRIGHT");
-                        break;
-                    default:
-                        System.out.println("Input error");
-                        break;
+                        System.out.print(", moving closer to enemy\n");
+                    }else if(this.coordinates.getX()>enemy.coordinates.getX()&&this.coordinates.getY()<enemy.coordinates.getY()){
+                        this.coordinates.move("UPPERRIGHT");
+                        System.out.print(", moving closer to enemy\n");
+                    }else if(this.coordinates.getX()<enemy.coordinates.getX()&&this.coordinates.getY()>enemy.coordinates.getY()){
+                        this.coordinates.move("LOWERLEFT");
+                        System.out.print(", moving closer to enemy\n");
+                    }else {
+                        System.out.println("Your enemy is close enough to attack");
                     }
-                    break;
-            case 6:
-                super.buy();
+                }
                 break;
-            case 7:
-                String l =super.useItem(); 
-                switch (l) {
-                    case "Health potion":
-                        this.hp+=20;
-                        this.inventory.items.replace("Health potion", this.inventory.items.get("Health potion"),this.inventory.items.get("Health potion")-1);
-                        break;
-                    case "Mana potion":
-                        System.out.print("Player doesn't use attribute of this type");
-                        break;
-                    case "Strength potion":
-                        System.out.print("Player doesn't use attribute of this type");
-                        break;
-                    case "Energy potion":
-                        this.energy+=20;
-                        this.inventory.items.replace("Energy potion", this.inventory.items.get("Energy potion"),this.inventory.items.get("Energy potion")-1);
-                        break;
-                    case "Magic potion":
-                        System.out.print("Player doesn't use attribute of this type");
-                        break;
-                    case "Arrow":
-                        super.giveArrow(a);
-                        break;
-                    default:
-                        System.out.println("Input error");
-                        break;
-                    }
+                case 4:
+                    this.rest();
                     break;
-            case 8:
-                super.giveItem(a);
-                break;
-            }
+                case 5:
+                    this.inventory.showInventory();
+                    break;
+                case 6:
+                    System.out.println("Choose direction:\n1->up\n2->down\n3->left\n4->right\n5->upper left\n6->upper right\n7->lower left\n8->lower right\n");
+                    System.out.print("Your choice:");
+                    p =(int)input.nextInt();
+                    switch(p){
+                        case 1:
+                            this.coordinates.move("UP");
+                            break;
+                        case 2:
+                            this.coordinates.move("DOWN");
+                            break;
+                        case 3:
+                            this.coordinates.move("LEFT");
+                            break;
+                        case 4:
+                            this.coordinates.move("RIGHT");
+                            break;
+                        case 5:
+                            this.coordinates.move("UPPERLEFT");
+                            break;
+                        case 6:
+                            this.coordinates.move("UPPERRIGHT");
+                            break;
+                        case 7:
+                            this.coordinates.move("LOWERLEFT");
+                            break;
+                        case 8:
+                            this.coordinates.move("LOWERRIGHT");
+                            break;
+                        default:
+                            System.out.println("Input error");
+                            break;
+                        }
+                        break;
+                case 7:
+                    super.buy();
+                    break;
+                case 8:
+                    String l =super.useItem(); 
+                    switch (l) {
+                        case "Health potion":
+                            this.hp+=20;
+                            this.inventory.items.replace("Health potion", this.inventory.items.get("Health potion"),this.inventory.items.get("Health potion")-1);
+                            break;
+                        case "Mana potion":
+                            System.out.print("Player doesn't use attribute of this type");
+                            break;
+                        case "Strength potion":
+                            System.out.print("Player doesn't use attribute of this type");
+                            break;
+                        case "Energy potion":
+                            this.energy+=20;
+                            this.inventory.items.replace("Energy potion", this.inventory.items.get("Energy potion"),this.inventory.items.get("Energy potion")-1);
+                            break;
+                        case "Magic potion":
+                            System.out.print("Player doesn't use attribute of this type");
+                            break;
+                        case "Arrow":
+                            super.giveArrow(a);
+                            break;
+                        default:
+                            System.out.println("Input error");
+                            break;
+                        }
+                        break;
+                case 9:
+                    super.giveItem(a);
+                    break;
+                }
+            } else {this.condition=Conditions.NORMAL;}
     }
     
     @Override
